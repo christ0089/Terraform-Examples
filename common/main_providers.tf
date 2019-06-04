@@ -22,6 +22,8 @@ resource "aws-lambda-functions" "balance_service" {
   # exported in that file.
   handler = "lambda-3/balance.api"
 
+  role = "${aws_iam_role.iam_for_lambda.arn}"
+
 
   # Optional, but ensures that things don't constantly refresh during local development
   source_code_hash = "${base64sha256(file("${local.api_dist_dir}"))}"
@@ -33,7 +35,9 @@ resource "aws-lambda-functions" "transaction_service" {
 
   runtime = "nodejs8.10"
 
- handler = "lambda-3/transaction.api"
+  handler = "lambda-3/transaction.api"
+
+  role = "${aws_iam_role.iam_for_lambda.arn}"
 
   # Optional, but ensures that things don't constantly refresh during local development
   source_code_hash = "${base64sha256(file("${local.api_dist_dir}"))}"
@@ -46,6 +50,9 @@ resource "aws-lambda-functions" "Card_Manager" {
 
 
   runtime = "nodejs8.10"
+  # Identifies the permiscions within the cloud that the service is capable of doing. This is normally found 
+  # in the IAm part of AWS.
+  role = "${aws_iam_role.iam_for_lambda.arn}"
 
   # "index" is the filename within the zip file (main.js) and "handler"
   # is the name of the property under which the handler function was
