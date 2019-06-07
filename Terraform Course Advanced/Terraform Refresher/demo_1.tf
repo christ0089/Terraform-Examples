@@ -11,6 +11,15 @@ variable "server_port" {
 
 data "aws_availability_zones" "all" {}
 
+# Shows Variables during the build fase of the  deployment
+output "public_ip" {
+  value = "${aws_instance.demo1.public_ip}"
+}
+# DNS http of the aws_elb so that we can make requests to the service.
+output "elb_dns_name" {
+  value = "${aws_elb.example.dns_name}"
+}
+
 resource "aws_security_group" "instance" {
   name = "aws_security_instance_1"
 
@@ -29,10 +38,7 @@ resource "aws_security_group" "instance" {
   }
 }
 
-# Shows Variables during the build fase of the  deployment
-output "public_ip" {
-  value = "${aws_instance.demo1.public_ip}"
-}
+
 
 # Defines a Configuration For other instances
 resource "aws_lauch_configuration" "example" {
